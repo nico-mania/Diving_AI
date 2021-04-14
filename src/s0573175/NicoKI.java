@@ -39,7 +39,7 @@ public class NicoKI extends AI {
         System.out.println("x:" + info.getX() + "    y:" +info.getY());
 
         Point[] pearl = info.getScene().getPearl();
-        System.out.println("x_" + pearl[1].x  +  "    y_" + pearl[1].y);
+        //System.out.println("x_" + pearl[1].x  +  "    y_" + pearl[1].y);
 
         Path2D[] obstacles = info.getScene().getObstacles();
         if (obstacles[0].contains(info.getX()+5, info.getY()))
@@ -47,17 +47,28 @@ public class NicoKI extends AI {
 
             obstacles[0].getPathIterator(null); //profi hint?
 
-        if (pearl[0].x < info.getX()){                  //left = (float)(-Math.PI), right = (float)(Math.PI * 2), up = (Math.PI / 2), down = (-Math.PI / 2)
-            return new DivingAction(0.5f, (float)(-Math.PI));
+        for (int i = 0; i < pearl.length; i++) {
+
+            System.out.println(i);
+            if (info.getScore() == i+1) {                                         //left = (float)(-Math.PI), right = (float)(Math.PI * 2), up = (Math.PI / 2), down = (-Math.PI / 2)
+                if (info.getY() == pearl[i].y){
+                    return new DivingAction(0.5f, (float) (Math.PI / 2));
+                }
+                else if (info.getY() < -400){
+                    return new DivingAction(0.5f, (float) (Math.PI / 2));
+                }
+                else {
+                    continue;
+                }
+            } else if (pearl[i].x < info.getX()) {
+                return new DivingAction(0.5f, (float) (-Math.PI));
+            } else if (pearl[i].x > info.getX()) {
+                return new DivingAction(0.5f, (float) (Math.PI * 2));
+            } else if (pearl[i].y != info.getY()) {
+                return new DivingAction(0.5f, (float) (-Math.PI / 2));
+            }
+
         }
-        else if (pearl[0].x > info.getX()){
-            return new DivingAction(0.5f, (float)(Math.PI * 2));
-        }
-        else if (pearl[0].y != info.getY()){
-            return new DivingAction(0.5f, (float) (-Math.PI / 2));
-        }
-        else {
-            return new DivingAction(0.5f, (float) (Math.PI / 2));
-        }
+        return null;
     }
 }
