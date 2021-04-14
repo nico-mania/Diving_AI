@@ -36,8 +36,10 @@ public class NicoKI extends AI {
         info.getX(); //my position
         info.getY();
 
+        System.out.println("x:" + info.getX() + "    y:" +info.getY());
+
         Point[] pearl = info.getScene().getPearl();
-        System.out.println(pearl[1].x & pearl[1].y);
+        //System.out.println(pearl[1].x & pearl[1].y);
 
         Path2D[] obstacles = info.getScene().getObstacles();
         if (obstacles[0].contains(info.getX()+5, info.getY()))
@@ -45,6 +47,12 @@ public class NicoKI extends AI {
 
             obstacles[0].getPathIterator(null); //profi hint?
 
-        return new DivingAction(0.5f, (float)(-Math.PI));
+        if (info.getX() == 800 && info.getY() >= -400){        //left = (float)(-Math.PI), right = (float)(Math.PI * 2), up = (Math.PI / 2), down = (-Math.PI / 2)
+            return new DivingAction(0.5f, (float) (-Math.PI / 2));
+        }
+        else if (info.getX() == 800 && info.getY() <= -400){
+            return new DivingAction(0.5f, (float) (-Math.PI * 2));
+        }
+        else return new DivingAction(0.5f, (float) (0));
     }
 }
