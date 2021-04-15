@@ -25,7 +25,7 @@ public class NicoKI extends AI {
         return "Abco";
     }
 
-    //Orientation für PlayerAction
+    //Orientation for PlayerAction
     double up = (Math.PI / 2);
     double down = -(Math.PI / 2);
     double right = (Math.PI * 2);
@@ -40,7 +40,7 @@ public class NicoKI extends AI {
 
         info.getOrientation();
 
-        info.getX(); //my position
+        info.getX(); // position of diver
         info.getY();
 
         // System.out.println("x:" + info.getX() + "    y:" +info.getY());
@@ -50,14 +50,14 @@ public class NicoKI extends AI {
 
         Path2D[] obstacles = info.getScene().getObstacles();
         if (obstacles[0].contains(info.getX()+5, info.getY())) {
-            //obstacle in front?
+            // obstacle in front?
 
-            // bewege in bestimmte richtung
+            // move diver in certain direction after collision
 
-            //obstacles[0].getPathIterator(null); //profi hint?
+            // obstacles[0].getPathIterator(null); //profi hint?
         }
 
-        System.out.println("Suche nach Perle: " + count);
+        System.out.println("Searching for pearl: " + count);
         if (info.getScore() == count) {
             if (info.getY() <= pearl[info.getScore()].y+100){
                 return new DivingAction(0.5f, (float) up);
