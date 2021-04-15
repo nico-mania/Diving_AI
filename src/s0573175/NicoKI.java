@@ -11,8 +11,8 @@ import java.awt.geom.Path2D;
 public class NicoKI extends AI {
 
     public NicoKI(Info info){
-	super(info);
-	enlistForTournament(573175);
+	    super(info);
+	    enlistForTournament(573175, 573144);
     }
 
     @Override
@@ -25,6 +25,13 @@ public class NicoKI extends AI {
         return "Abco";
     }
 
+    //Orientation für PlayerAction
+    double up = (Math.PI / 2);
+    double down = -(Math.PI / 2);
+    double right = (Math.PI * 2);
+    double left = (-Math.PI);
+    int count = 0;
+
     @Override
     public PlayerAction update() {
 
@@ -36,39 +43,34 @@ public class NicoKI extends AI {
         info.getX(); //my position
         info.getY();
 
-        System.out.println("x:" + info.getX() + "    y:" +info.getY());
+        // System.out.println("x:" + info.getX() + "    y:" +info.getY());
 
         Point[] pearl = info.getScene().getPearl();
-        //System.out.println("x_" + pearl[1].x  +  "    y_" + pearl[1].y);
+        // System.out.println("x_" + pearl[1].x  +  "    y_" + pearl[1].y);
 
         Path2D[] obstacles = info.getScene().getObstacles();
-        if (obstacles[0].contains(info.getX()+5, info.getY()))
+        if (obstacles[0].contains(info.getX()+5, info.getY())) {
             //obstacle in front?
 
-            obstacles[0].getPathIterator(null); //profi hint?
+            // bewege in bestimmte richtung
 
-        for (int i = 0; i < pearl.length; i++) {
-
-            System.out.println(i);
-            if (info.getScore() == i+1) {                                         //left = (float)(-Math.PI), right = (float)(Math.PI * 2), up = (Math.PI / 2), down = (-Math.PI / 2)
-                if (info.getY() == pearl[i].y){
-                    return new DivingAction(0.5f, (float) (Math.PI / 2));
-                }
-                else if (info.getY() < -400){
-                    return new DivingAction(0.5f, (float) (Math.PI / 2));
-                }
-                else {
-                    continue;
-                }
-            } else if (pearl[i].x < info.getX()) {
-                return new DivingAction(0.5f, (float) (-Math.PI));
-            } else if (pearl[i].x > info.getX()) {
-                return new DivingAction(0.5f, (float) (Math.PI * 2));
-            } else if (pearl[i].y != info.getY()) {
-                return new DivingAction(0.5f, (float) (-Math.PI / 2));
-            }
-
+            //obstacles[0].getPathIterator(null); //profi hint?
         }
+
+        System.out.println("Suche nach Perle: " + count);
+        if (info.getScore() == count) {
+            if (info.getY() <= pearl[info.getScore()].y+100){
+                return new DivingAction(0.5f, (float) up);
+            }
+        } else if (pearl[info.getScore()].x < info.getX()) {
+            return new DivingAction(0.5f, (float) left);
+        } else if (pearl[info.getScore()].x > info.getX()) {
+            return new DivingAction(0.5f, (float) right);
+        } else if (pearl[info.getScore()].y != info.getY()) {
+            return new DivingAction(0.5f, (float) down);
+        }
+
+        count++;
         return null;
     }
 }
