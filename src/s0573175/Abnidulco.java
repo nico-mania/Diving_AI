@@ -23,7 +23,7 @@ public class Abnidulco extends AI {
 
         @Override
         public String getName(){
-            return "Abnidulco";
+            return "Abni Dulco";
         }
 
     //Orientation for PlayerAction (1st Version)
@@ -48,39 +48,44 @@ public class Abnidulco extends AI {
             info.getX(); // position of diver
             info.getY();
 
-            System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
-            System.out.println("Angle:" + info.getOrientation());
+//            System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
+//            System.out.println("Angle:" + info.getOrientation());
 
             Point[] pearl = info.getScene().getPearl();
 
             Path2D[] obstacles = info.getScene().getObstacles();
 
+            //shell sort
             float[] tempPearlX = {pearl[0].x, pearl[1].x, pearl[2].x, pearl[3].x, pearl[4].x, pearl[5].x, pearl[6].x, pearl[7].x, pearl[8].x, pearl[9].x};
             float[] tempPearlY = {pearl[0].y, pearl[1].y, pearl[2].y, pearl[3].y, pearl[4].y, pearl[5].y, pearl[6].y, pearl[7].y, pearl[8].y, pearl[9].y};
 
             Arrays.sort(tempPearlX);
             Arrays.sort(tempPearlY);
 
-            float seekY = tempPearlY[info.getScore()] - info.getY();
+
+            //System.out.println(Arrays.toString(tempPearlX));
+
+            float seekY = -500 - info.getY();       //hardcoded height to compensate bad sort for y
             float seekX = tempPearlX[info.getScore()] - info.getX();
 
-            float fleeY = info.getY() - pearl[info.getScore()].y;
-            float fleeX = info.getX() - tempPearlX[info.getScore()];
+            System.out.println(info.getY());
 
+            //dodge obstacles
             if (obstacles[1].contains(info.getX(), info.getY()-10)) {
-                int count = 0;
                 while (info.getY() < 550) {
                     // obstacle in front?
                     return new DivingAction(0.5f, info.getOrientation()+0.1f);
                 }
-            }else if (obstacles[0].contains(info.getX()+10, info.getY()+15) || obstacles[0].contains(info.getX()+10, info.getY()-15) ) {
-                int count = 0;
+            }else if (obstacles[0].contains(info.getX()+10, info.getY()+15) || obstacles[0].contains(info.getX()+10, info.getY()-15) ||     //split in two else if later
+                      obstacles[0].contains(info.getX()-10, info.getY()-15) || obstacles[0].contains(info.getX()-10, info.getY()+15)) {
                 while (info.getY() < 550) {
                     // obstacle in front?
                     return new DivingAction(0.5f, info.getOrientation()+0.1f);
                 }
             }else{
-//          System.out.println("Searching for pearl: " + count);
+            //System.out.println("Searching for pearl: " + count);
+
+            //collecting behaviour
             if (info.getScore() == count) {
                 if (info.getY() <= info.getY()-250){
                     return new DivingAction(0.5f, (float)up/2);
