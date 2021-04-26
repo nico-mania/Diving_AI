@@ -76,12 +76,17 @@ public class Abnidulco extends AI {
                     // obstacle in front?
                     return new DivingAction(0.5f, info.getOrientation()+0.1f);
                 }
-            }else if (obstacles[0].contains(info.getX()+10, info.getY()+15) || obstacles[0].contains(info.getX()+10, info.getY()-15) ||     //split in two else if later
-                      obstacles[0].contains(info.getX()-10, info.getY()-15) || obstacles[0].contains(info.getX()-10, info.getY()+15)) {
+            }else if (obstacles[0].contains(info.getX()+10, info.getY()+10) || obstacles[0].contains(info.getX()+10, info.getY()-10)) {
                 while (info.getY() < 550) {
                     // obstacle in front?
                     return new DivingAction(0.5f, info.getOrientation()+0.1f);
                 }
+            }else if (obstacles[0].contains(info.getX()-10, info.getY()+10) || obstacles[0].contains(info.getX()-10, info.getY()-10)) {
+                while (info.getY() < 550) {
+                    // obstacle in front?
+                    return new DivingAction(0.5f, info.getOrientation()-0.1f);
+                }
+
             }else{
             //System.out.println("Searching for pearl: " + count);
 
