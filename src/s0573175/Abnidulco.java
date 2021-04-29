@@ -79,12 +79,12 @@ public class Abnidulco extends AI {
             }else if (obstacles[0].contains(info.getX()+10, info.getY()+10) || obstacles[0].contains(info.getX()+10, info.getY()-10)) {
                 while (info.getY() < 550) {
                     // obstacle in front?
-                    return new DivingAction(0.5f, info.getOrientation()+0.1f);
+                    return new DivingAction(0.5f, info.getOrientation()+0.2f);
                 }
             }else if (obstacles[0].contains(info.getX()-10, info.getY()+10) || obstacles[0].contains(info.getX()-10, info.getY()-10)) {
                 while (info.getY() < 550) {
                     // obstacle in front?
-                    return new DivingAction(0.5f, info.getOrientation()-0.1f);
+                    return new DivingAction(0.5f, info.getOrientation()-0.2f);
                 }
 
             }else{
