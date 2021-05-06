@@ -8,7 +8,7 @@ import lenz.htw.ai4g.ai.PlayerAction;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
-import java.lang.Object;
+
 public class Abnidulco extends AI {
 
     public Abnidulco(Info info){
@@ -31,24 +31,29 @@ public class Abnidulco extends AI {
     double left = (-Math.PI);
     int count = 0;
     float direction = 0;
-    // obstacles[0] --> little sand dot
-    // obstacles[1] --> sand ground
 
     @Override
     public PlayerAction update() {
+
         info.getMaxVelocity();  //max. velocity
         info.getVelocity();     //current velocity
         info.getOrientation();
+
         info.getX(); // position of diver
         info.getY();
+
         System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
         System.out.println("Angle:" + info.getOrientation());
+
         Point[] pearl = info.getScene().getPearl();
         Path2D[] obstacles = info.getScene().getObstacles();
+
         float[] originalPearlX = {pearl[0].x, pearl[1].x, pearl[2].x, pearl[3].x, pearl[4].x, pearl[5].x, pearl[6].x, pearl[7].x, pearl[8].x, pearl[9].x};
         float[] originalPearlY = {pearl[0].y, pearl[1].y, pearl[2].y, pearl[3].y, pearl[4].y, pearl[5].y, pearl[6].y, pearl[7].y, pearl[8].y, pearl[9].y};
+
         float[] tempPearlX = {pearl[0].x, pearl[1].x, pearl[2].x, pearl[3].x, pearl[4].x, pearl[5].x, pearl[6].x, pearl[7].x, pearl[8].x, pearl[9].x};
         float[] tempPearlY = {pearl[0].y, pearl[1].y, pearl[2].y, pearl[3].y, pearl[4].y, pearl[5].y, pearl[6].y, pearl[7].y, pearl[8].y, pearl[9].y};
+
         Arrays.sort(tempPearlX);
         Arrays.sort(tempPearlY);
 
@@ -57,6 +62,7 @@ public class Abnidulco extends AI {
             n = findIndex(originalPearlX, tempPearlX[i]);
             tempPearlY[i] = pearl[n].y;
         }
+
 //            System.out.println("X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
 //            System.out.println("X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
 //            System.out.println("X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
@@ -67,6 +73,7 @@ public class Abnidulco extends AI {
 //            System.out.println("X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
 //            System.out.println("X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
 //            System.out.println("X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
+
 //            System.out.println("Obstacle 1: " + obstacles[0].getCurrentPoint());
 //            System.out.println("Obstacle 2: " + obstacles[1].getCurrentPoint());
 //            System.out.println("Obstacle 3: " + obstacles[2].getCurrentPoint());
@@ -75,10 +82,13 @@ public class Abnidulco extends AI {
 
         float seekY = tempPearlY[info.getScore()] - info.getY();
         float seekX = tempPearlX[info.getScore()] - info.getX();
+
         float fleeY = seekY * (-1);
         float fleeX = seekX * (-1);
+
         //Für Aufgabe 2
         //int[] obstacleNumbers = {0,1,2,3,4};
+
         if (obstacles[4].contains(info.getX(), info.getY()-5) || obstacles[4].contains(info.getX()+10, info.getY())) {
             int count = 0;
             while (info.getY() < 500) {
@@ -99,7 +109,7 @@ public class Abnidulco extends AI {
                 // obstacle in front?
                 return new DivingAction(0.5f, info.getOrientation()+0.05f);
             }
-        }else {
+        }else{
 
 //              System.out.println("Searching for pearl: " + count);
 //              if (info.getScore() == count) {
@@ -148,7 +158,6 @@ public class Abnidulco extends AI {
 //        }
 //        count++;
 //        return null;
-
 
     // Source: https://www.geeksforgeeks.org/find-the-index-of-an-array-element-in-java/
     public static int findIndex(float arr[], float t)
