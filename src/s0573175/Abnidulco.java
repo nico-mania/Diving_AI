@@ -89,12 +89,14 @@ public class Abnidulco extends AI {
         //Für Aufgabe 2
         //int[] obstacleNumbers = {0,1,2,3,4};
 
+        // Boden
         if (obstacles[4].contains(info.getX(), info.getY()-5) || obstacles[4].contains(info.getX()+10, info.getY())) {
             int count = 0;
             while (info.getY() < 500) {
                 // obstacle in front?
-                return new DivingAction(0.5f,  info.getOrientation() + 0.05f);
+                return new DivingAction(0.5f,  info.getOrientation() + 0.1f);
             }
+        // Mittelgroß linker Fleck
         }else if (obstacles[2].contains(info.getX(), info.getY()-5) || obstacles[2].contains(info.getX()+10, info.getY())
                 || obstacles[2].contains(info.getX(), info.getY()+5) || obstacles[2].contains(info.getX()-10, info.getY())) {
             int count = 0;
@@ -102,14 +104,31 @@ public class Abnidulco extends AI {
                 // obstacle in front?
                 return new DivingAction(0.5f, info.getOrientation()+0.05f);
             }
+        // Mittelgroß mittiger Fleck
         }else if (obstacles[1].contains(info.getX(), info.getY()-5) || obstacles[1].contains(info.getX()+10, info.getY())
                 || obstacles[1].contains(info.getX(), info.getY()+5) || obstacles[1].contains(info.getX()-10, info.getY())) {
             int count = 0;
             while (info.getY() < 100) {
                 // obstacle in front?
-                return new DivingAction(0.5f, info.getOrientation()+0.05f);
+                return new DivingAction(0.5f, info.getOrientation() + 0.05f);
             }
-        }else{
+        // Mittelgroß rechter Fleck
+        }else if (obstacles[3].contains(info.getX(), info.getY()-5) || obstacles[3].contains(info.getX()+10, info.getY())
+                    || obstacles[3].contains(info.getX(), info.getY()+5) || obstacles[3].contains(info.getX()-10, info.getY())) {
+                int count = 0;
+                while (info.getY() < 100) {
+                    // obstacle in front?
+                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+                }
+        // Kleiner linker Fleck
+        }else if (obstacles[0].contains(info.getX(), info.getY()-5) || obstacles[0].contains(info.getX()+10, info.getY())
+                || obstacles[0].contains(info.getX(), info.getY()+5) || obstacles[0].contains(info.getX()-10, info.getY())) {
+            int count = 0;
+            while (info.getY() < 100) {
+                // obstacle in front?
+                return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+            }
+            }else{
 
 //              System.out.println("Searching for pearl: " + count);
 //              if (info.getScore() == count) {
