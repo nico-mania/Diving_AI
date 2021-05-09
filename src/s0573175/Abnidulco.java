@@ -44,9 +44,9 @@ public class Abnidulco extends AI {
         info.getX(); // position of diver
         info.getY();
 
-        System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
-        System.out.println("Angle:" + info.getOrientation());
-        System.out.println("Ship: " + info.getScene().getShopPosition());
+//        System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
+//        System.out.println("Angle:" + info.getOrientation());
+//        System.out.println("Ship: " + info.getScene().getShopPosition());
 
         Point[] pearl = info.getScene().getPearl();
         Path2D[] obstacles = info.getScene().getObstacles();
@@ -66,16 +66,16 @@ public class Abnidulco extends AI {
             tempPearlY[i] = pearl[n].y;
         }
 
-            System.out.println("Perle 1  -  X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
-            System.out.println("Perle 2  -  X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
-            System.out.println("Perle 3  -  X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
-            System.out.println("Perle 4  -  X: " + tempPearlX[3] + " Y:" + tempPearlY[3]);
-            System.out.println("Perle 5  -  X: " + tempPearlX[4] + " Y:" + tempPearlY[4]);
-            System.out.println("Perle 6  -  X: " + tempPearlX[5] + " Y:" + tempPearlY[5]);
-            System.out.println("Perle 7  -  X: " + tempPearlX[6] + " Y:" + tempPearlY[6]);
-            System.out.println("Perle 8  -  X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
-            System.out.println("Perle 9  -  X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
-            System.out.println("Perle 10 - X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
+//            System.out.println("Perle 1  -  X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
+//            System.out.println("Perle 2  -  X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
+//            System.out.println("Perle 3  -  X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
+//            System.out.println("Perle 4  -  X: " + tempPearlX[3] + " Y:" + tempPearlY[3]);
+//            System.out.println("Perle 5  -  X: " + tempPearlX[4] + " Y:" + tempPearlY[4]);
+//            System.out.println("Perle 6  -  X: " + tempPearlX[5] + " Y:" + tempPearlY[5]);
+//            System.out.println("Perle 7  -  X: " + tempPearlX[6] + " Y:" + tempPearlY[6]);
+//            System.out.println("Perle 8  -  X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
+//            System.out.println("Perle 9  -  X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
+//            System.out.println("Perle 10 - X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
 
 //            System.out.println("Obstacle 1: " + obstacles[0].getCurrentPoint());
 //            System.out.println("Obstacle 2: " + obstacles[1].getCurrentPoint());
@@ -100,11 +100,7 @@ public class Abnidulco extends AI {
             int count = 0;
             while (info.getY() < 500) {
                 // obstacle in front?
-                if (info.getOrientation() < -Math.PI/2) {
-                    return new DivingAction(0.5f, info.getOrientation() - 0.1f);
-                }else{
-                    return new DivingAction(0.5f, info.getOrientation() + 0.1f);
-                }
+                return new DivingAction(0.5f, info.getOrientation() + 0.1f);
             }
         // Mittelgroß linker Fleck
         }else if (obstacles[2].contains(info.getX(), info.getY()-5) || obstacles[2].contains(info.getX()+10, info.getY())
@@ -151,7 +147,7 @@ public class Abnidulco extends AI {
 //              } else {
 //                  return new DivingAction(0.5f, (float) down);
 //              }
-            return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX));
+            return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.1f);
         }
         count++;
         return null;
