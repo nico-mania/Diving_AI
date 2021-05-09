@@ -8,6 +8,8 @@ import lenz.htw.ai4g.ai.PlayerAction;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Abnidulco extends AI {
 
@@ -30,7 +32,7 @@ public class Abnidulco extends AI {
     double right = (Math.PI * 2);
     double left = (-Math.PI);
     int count = 0;
-    float direction = 0;
+    int timer = 0;
 
     @Override
     public PlayerAction update() {
@@ -44,6 +46,7 @@ public class Abnidulco extends AI {
 
         System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
         System.out.println("Angle:" + info.getOrientation());
+        System.out.println("Ship: " + info.getScene().getShopPosition());
 
         Point[] pearl = info.getScene().getPearl();
         Path2D[] obstacles = info.getScene().getObstacles();
@@ -63,16 +66,16 @@ public class Abnidulco extends AI {
             tempPearlY[i] = pearl[n].y;
         }
 
-//            System.out.println("X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
-//            System.out.println("X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
-//            System.out.println("X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
-//            System.out.println("X: " + tempPearlX[3] + " Y:" + tempPearlY[3]);
-//            System.out.println("X: " + tempPearlX[4] + " Y:" + tempPearlY[4]);
-//            System.out.println("X: " + tempPearlX[5] + " Y:" + tempPearlY[5]);
-//            System.out.println("X: " + tempPearlX[6] + " Y:" + tempPearlY[6]);
-//            System.out.println("X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
-//            System.out.println("X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
-//            System.out.println("X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
+            System.out.println("Perle 1  -  X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
+            System.out.println("Perle 2  -  X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
+            System.out.println("Perle 3  -  X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
+            System.out.println("Perle 4  -  X: " + tempPearlX[3] + " Y:" + tempPearlY[3]);
+            System.out.println("Perle 5  -  X: " + tempPearlX[4] + " Y:" + tempPearlY[4]);
+            System.out.println("Perle 6  -  X: " + tempPearlX[5] + " Y:" + tempPearlY[5]);
+            System.out.println("Perle 7  -  X: " + tempPearlX[6] + " Y:" + tempPearlY[6]);
+            System.out.println("Perle 8  -  X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
+            System.out.println("Perle 9  -  X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
+            System.out.println("Perle 10 - X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
 
 //            System.out.println("Obstacle 1: " + obstacles[0].getCurrentPoint());
 //            System.out.println("Obstacle 2: " + obstacles[1].getCurrentPoint());
@@ -82,6 +85,9 @@ public class Abnidulco extends AI {
 
         float seekY = tempPearlY[info.getScore()] - info.getY();
         float seekX = tempPearlX[info.getScore()] - info.getX();
+
+        float seekBoatY = 0 - info.getY();
+        float seekBoatX = info.getScene().getShopPosition() - info.getX();
 
         float fleeY = seekY * (-1);
         float fleeX = seekX * (-1);
@@ -94,7 +100,11 @@ public class Abnidulco extends AI {
             int count = 0;
             while (info.getY() < 500) {
                 // obstacle in front?
-                return new DivingAction(0.5f,  info.getOrientation() + 0.1f);
+                if (info.getOrientation() < -Math.PI/2) {
+                    return new DivingAction(0.5f, info.getOrientation() - 0.1f);
+                }else{
+                    return new DivingAction(0.5f, info.getOrientation() + 0.1f);
+                }
             }
         // Mittelgroß linker Fleck
         }else if (obstacles[2].contains(info.getX(), info.getY()-5) || obstacles[2].contains(info.getX()+10, info.getY())
@@ -121,12 +131,11 @@ public class Abnidulco extends AI {
                     return new DivingAction(0.5f, info.getOrientation() + 0.05f);
                 }
         // Kleiner linker Fleck
-        }else if (obstacles[0].contains(info.getX(), info.getY()-5) || obstacles[0].contains(info.getX()+10, info.getY())
-                || obstacles[0].contains(info.getX(), info.getY()+5) || obstacles[0].contains(info.getX()-10, info.getY())) {
-            int count = 0;
+        }else if (obstacles[0].contains(info.getX(), info.getY()-10) || obstacles[0].contains(info.getX()+15, info.getY())
+                || obstacles[0].contains(info.getX(), info.getY()+10) || obstacles[0].contains(info.getX()-15, info.getY())) {
             while (info.getY() < 100) {
-                // obstacle in front?
-                return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+                    // obstacle in front?
+                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
             }
             }else{
 
@@ -200,6 +209,18 @@ public class Abnidulco extends AI {
             }
         }
         return -1;
+    }
+
+    private class emergSwim extends TimerTask
+    {
+        public void run()
+        {
+            if(timer < 70){
+            new DivingAction(0.5f , (float)left /2);
+            }else{
+                timer = 0;
+            }
+        }
     }
 }
 
