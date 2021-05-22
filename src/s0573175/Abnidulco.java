@@ -23,7 +23,7 @@ public class Abnidulco extends AI {
     }
     @Override
     public String getName(){
-        return "Abnidulco";
+        return "Abni Dulco";
     }
 
     //Orientation for PlayerAction (1st Version)
@@ -44,12 +44,9 @@ public class Abnidulco extends AI {
         info.getX(); // position of diver
         info.getY();
 
-//        System.out.println("x:" + info.getX() + "    y:" + (-info.getY()));
-//        System.out.println("Angle:" + info.getOrientation());
-//        System.out.println("Ship: " + info.getScene().getShopPosition());
-
         Point[] pearl = info.getScene().getPearl();
         Path2D[] obstacles = info.getScene().getObstacles();
+        Point[] fishes = info.getScene().getFish();
 
         float[] originalPearlX = {pearl[0].x, pearl[1].x, pearl[2].x, pearl[3].x, pearl[4].x, pearl[5].x, pearl[6].x, pearl[7].x, pearl[8].x, pearl[9].x};
         float[] originalPearlY = {pearl[0].y, pearl[1].y, pearl[2].y, pearl[3].y, pearl[4].y, pearl[5].y, pearl[6].y, pearl[7].y, pearl[8].y, pearl[9].y};
@@ -60,28 +57,11 @@ public class Abnidulco extends AI {
         Arrays.sort(tempPearlX);
         Arrays.sort(tempPearlY);
 
-        for (int i = 0; i < pearl.length; i++){
+        for (int i = 0; i < pearl.length; i++) {
             int n = 0;
             n = findIndex(originalPearlX, tempPearlX[i]);
             tempPearlY[i] = pearl[n].y;
         }
-
-//            System.out.println("Perle 1  -  X: " + tempPearlX[0] + " Y:" + tempPearlY[0]);
-//            System.out.println("Perle 2  -  X: " + tempPearlX[1] + " Y:" + tempPearlY[1]);
-//            System.out.println("Perle 3  -  X: " + tempPearlX[2] + " Y:" + tempPearlY[2]);
-//            System.out.println("Perle 4  -  X: " + tempPearlX[3] + " Y:" + tempPearlY[3]);
-//            System.out.println("Perle 5  -  X: " + tempPearlX[4] + " Y:" + tempPearlY[4]);
-//            System.out.println("Perle 6  -  X: " + tempPearlX[5] + " Y:" + tempPearlY[5]);
-//            System.out.println("Perle 7  -  X: " + tempPearlX[6] + " Y:" + tempPearlY[6]);
-//            System.out.println("Perle 8  -  X: " + tempPearlX[7] + " Y:" + tempPearlY[7]);
-//            System.out.println("Perle 9  -  X: " + tempPearlX[8] + " Y:" + tempPearlY[8]);
-//            System.out.println("Perle 10 - X: " + tempPearlX[9] + " Y:" + tempPearlY[9]);
-
-//            System.out.println("Obstacle 1: " + obstacles[0].getCurrentPoint());
-//            System.out.println("Obstacle 2: " + obstacles[1].getCurrentPoint());
-//            System.out.println("Obstacle 3: " + obstacles[2].getCurrentPoint());
-//            System.out.println("Obstacle 4: " + obstacles[3].getCurrentPoint());
-//            System.out.println("Obstacle 5: " + obstacles[4].getCurrentPoint());
 
         float seekY = tempPearlY[info.getScore()] - info.getY();
         float seekX = tempPearlX[info.getScore()] - info.getX();
@@ -92,96 +72,60 @@ public class Abnidulco extends AI {
         float fleeY = seekY * (-1);
         float fleeX = seekX * (-1);
 
-        //Für Aufgabe 2
-        //int[] obstacleNumbers = {0,1,2,3,4};
+        //Für Aufgabe 3
 
-        // Boden
-        if (obstacles[4].contains(info.getX(), info.getY()-5) || obstacles[4].contains(info.getX()+10, info.getY())) {
-            int count = 0;
-            while (info.getY() < 500) {
-                // obstacle in front?
-                return new DivingAction(0.5f, info.getOrientation() + 0.1f);
-            }
-        // Mittelgroß linker Fleck
-        }else if (obstacles[2].contains(info.getX(), info.getY()-5) || obstacles[2].contains(info.getX()+10, info.getY())
-                || obstacles[2].contains(info.getX(), info.getY()+5) || obstacles[2].contains(info.getX()-10, info.getY())) {
-            int count = 0;
-            while (info.getY() < 100) {
-                // obstacle in front?
-                return new DivingAction(0.5f, info.getOrientation()+0.05f);
-            }
-        // Mittelgroß mittiger Fleck
-        }else if (obstacles[1].contains(info.getX(), info.getY()-5) || obstacles[1].contains(info.getX()+10, info.getY())
-                || obstacles[1].contains(info.getX(), info.getY()+5) || obstacles[1].contains(info.getX()-10, info.getY())) {
-            int count = 0;
-            while (info.getY() < 100) {
-                // obstacle in front?
-                return new DivingAction(0.5f, info.getOrientation() + 0.05f);
-            }
-        // Mittelgroß rechter Fleck
-        }else if (obstacles[3].contains(info.getX(), info.getY()-5) || obstacles[3].contains(info.getX()+10, info.getY())
-                    || obstacles[3].contains(info.getX(), info.getY()+5) || obstacles[3].contains(info.getX()-10, info.getY())) {
-                int count = 0;
+        int i;
+        int[] obstacleList = new int[obstacles.length];
+
+        for (i=0; i < obstacles.length; i++){
+            obstacleList[i] = i;
+        }
+
+        int f;
+        int[] fishList = new int[fishes.length];
+
+        for (f=0; f < obstacles.length; f++){
+            fishList[f] = f;
+        }
+
+        System.out.println("Obstacles: " + obstacles.length);
+        System.out.println(Arrays.toString(obstacleList));
+        System.out.println();
+        System.out.println("Fishes: " + fishes.length);
+        System.out.println(Arrays.toString(fishList));
+
+
+        for (int obstacle : obstacleList){
+            if (obstacles[obstacle].contains(info.getX(), info.getY() - 5) || obstacles[obstacle].contains(info.getX() + 10, info.getY())
+                    || obstacles[obstacle].contains(info.getX(), info.getY() + 5) || obstacles[obstacle].contains(info.getX() - 10, info.getY())) {
+                System.out.println("IM INSIDE");
                 while (info.getY() < 100) {
-                    // obstacle in front?
                     return new DivingAction(0.5f, info.getOrientation() + 0.05f);
                 }
-        // Kleiner linker Fleck
-        }else if (obstacles[0].contains(info.getX(), info.getY()-10) || obstacles[0].contains(info.getX()+15, info.getY())
-                || obstacles[0].contains(info.getX(), info.getY()+10) || obstacles[0].contains(info.getX()-15, info.getY())) {
-            while (info.getY() < 100) {
-                    // obstacle in front?
-                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
             }
-            }else{
+        }
 
-//              System.out.println("Searching for pearl: " + count);
-//              if (info.getScore() == count) {
-//                  if (info.getY() <= info.getY()-50){
-//                      return new DivingAction(0.5f, (float)up/2);
-//                  }
-//              } else if (tempPearlX[info.getScore()] < info.getX()) {
-//                  return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX));
-//              } else if (tempPearlX[info.getScore()] > info.getX()) {
-//                  return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX));
-//              } else {
-//                  return new DivingAction(0.5f, (float) down);
-//              }
-            return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.1f);
+        for (i = 0; i < obstacles.length; i++) {
+
+            if (obstacles[i].contains(info.getX(), info.getY() - 5) || obstacles[i].contains(info.getX() + 10, info.getY())
+                    || obstacles[i].contains(info.getX(), info.getY() + 5) || obstacles[i].contains(info.getX() - 10, info.getY())) {
+                System.out.println("IM INSIDE");
+                while (info.getY() < 100) {
+                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+                }
+
+            }else if (obstacles[i].contains(info.getX(), info.getY() - 5) || obstacles[i].contains(info.getX() + 10, info.getY())) {
+                while (info.getY() < 100) {
+                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+                }
+
+            }else{
+                return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.1f);
+                }
         }
         count++;
         return null;
     }
-
-//            if (obstacles[1].contains(info.getX(), info.getY()-10)) {
-//                int count = 0;
-//                while (info.getY() < 550) {
-//                    // obstacle in front?
-//                    return new DivingAction(0.5f, info.getOrientation()+0.1f);
-//                }
-//            }else if (obstacles[0].contains(info.getX()+10, info.getY()+15) || obstacles[0].contains(info.getX()+10, info.getY()-15) ) {
-//                int count = 0;
-//                while (info.getY() < 550) {
-//                    // obstacle in front?
-//                    return new DivingAction(0.5f, info.getOrientation()+0.1f);
-//                }
-//
-//            }else{
-////          System.out.println("Searching for pearl: " + count);
-//            if (info.getScore() == count) {
-//                if (info.getY() <= info.getY()-250){
-//                    return new DivingAction(0.5f, (float)up/2);
-//                }
-//            } else if (tempPearlX[info.getScore()] < info.getX()) {
-//                return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX));
-//            } else if (tempPearlX[info.getScore()] > info.getX()) {
-//                return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX));
-//            } else {
-//                return new DivingAction(0.5f, (float) down);
-//            }
-//        }
-//        count++;
-//        return null;
 
     // Source: https://www.geeksforgeeks.org/find-the-index-of-an-array-element-in-java/
     public static int findIndex(float arr[], float t)
@@ -207,17 +151,6 @@ public class Abnidulco extends AI {
         return -1;
     }
 
-    private class emergSwim extends TimerTask
-    {
-        public void run()
-        {
-            if(timer < 70){
-            new DivingAction(0.5f , (float)left /2);
-            }else{
-                timer = 0;
-            }
-        }
-    }
 }
 
 
