@@ -84,7 +84,7 @@ public class Abnidulco extends AI {
         int f;
         int[] fishList = new int[fishes.length];
 
-        for (f=0; f < obstacles.length; f++){
+        for (f=0; f < fishes.length; f++){
             fishList[f] = f;
         }
 
