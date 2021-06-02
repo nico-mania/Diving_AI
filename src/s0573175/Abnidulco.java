@@ -72,7 +72,7 @@ public class Abnidulco extends AI {
         float fleeY = seekY * (-1);
         float fleeX = seekX * (-1);
 
-        //Für Aufgabe 3
+        //Für Aufgabe 4
 
         int i;
         int[] obstacleList = new int[obstacles.length];
@@ -81,35 +81,37 @@ public class Abnidulco extends AI {
             obstacleList[i] = i;
         }
 
-        int f;
-        int[] fishList = new int[fishes.length];
-
-        for (f=0; f < fishes.length; f++){
-            fishList[f] = f;
-        }
-
         System.out.println("Obstacles: " + obstacles.length);
         System.out.println(Arrays.toString(obstacleList));
-        System.out.println();
-        System.out.println("Fishes: " + fishes.length);
-        System.out.println(Arrays.toString(fishList));
+        System.out.println("Air: " + info.getAir());
+
 
 
         for (int obstacle : obstacleList){
+
             if (obstacles[obstacle].contains(info.getX(), info.getY() - 5) || obstacles[obstacle].contains(info.getX() + 10, info.getY())
                     || obstacles[obstacle].contains(info.getX(), info.getY() + 5) || obstacles[obstacle].contains(info.getX() - 10, info.getY())) {
-                System.out.println("IM INSIDE");
+                System.out.println("colliding");
                 while (info.getY() < 100) {
-                    return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+
+                    if (info.getOrientation() > down && info.getOrientation() < up) {
+
+                        return new DivingAction(0.5f, info.getOrientation() + 0.05f);
+                    } else {
+
+                        return new DivingAction(0.5f, info.getOrientation() - 0.05f);
+
+                    }
                 }
             }
         }
+
 
         for (i = 0; i < obstacles.length; i++) {
 
             if (obstacles[i].contains(info.getX(), info.getY() - 5) || obstacles[i].contains(info.getX() + 10, info.getY())
                     || obstacles[i].contains(info.getX(), info.getY() + 5) || obstacles[i].contains(info.getX() - 10, info.getY())) {
-                System.out.println("IM INSIDE");
+                System.out.println("colliding differently");
                 while (info.getY() < 100) {
                     return new DivingAction(0.5f, info.getOrientation() + 0.05f);
                 }
@@ -120,7 +122,18 @@ public class Abnidulco extends AI {
                 }
 
             }else{
-                return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.1f);
+                //return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.1f);
+
+                    if (info.getAir() <= 490) {
+                        if (info.getY() < 0 ) {
+                                return new DivingAction(0.5f, (float) up);
+                            }
+                        }
+                    else if(tempPearlX[info.getScore()] == info.getX()) {
+                        return new DivingAction(0.5f, (float) down);
+                    } else if (tempPearlY[info.getScore()] != info.getY()) {
+                        return new DivingAction(0.5f, (float) Math.atan2(seekY, seekX) - 0.2f);
+                    }
                 }
         }
         count++;
@@ -151,6 +164,22 @@ public class Abnidulco extends AI {
         return -1;
     }
 
+    /**
+     *
+
+    System.out.println("Suche nach Perle: " + count);
+        if (info.getScore() == count) {
+        if (info.getY() <= pearl[info.getScore()].y+100){
+            return new DivingAction(0.5f, (float) up);
+        }
+    } else if (pearl[info.getScore()].x < info.getX()) {
+        return new DivingAction(0.5f, (float) left);
+    } else if (pearl[info.getScore()].x > info.getX()) {
+        return new DivingAction(0.5f, (float) right);
+    } else if (pearl[info.getScore()].y != info.getY()) {
+        return new DivingAction(0.5f, (float) down);
+
+     */
 }
 
 

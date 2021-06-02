@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../AI_GAMES_Ü1/ai.jar!/" />
+          <root url="jar://$MODULE_DIR$/../ai.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
