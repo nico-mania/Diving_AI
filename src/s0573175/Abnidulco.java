@@ -81,9 +81,10 @@ public class Abnidulco extends AI {
             obstacleList[i] = i;
         }
 
-        System.out.println("Obstacles: " + obstacles.length);
-        System.out.println(Arrays.toString(obstacleList));
-        System.out.println("Air: " + info.getAir());
+//        System.out.println("Obstacles: " + obstacles.length);
+//        System.out.println(Arrays.toString(obstacleList));
+//        System.out.println("Air: " + info.getAir());
+  //      System.out.println(info.getVelocity());
 
 
 
@@ -91,17 +92,13 @@ public class Abnidulco extends AI {
 
             if (obstacles[obstacle].contains(info.getX(), info.getY() - 5) || obstacles[obstacle].contains(info.getX() + 10, info.getY())
                     || obstacles[obstacle].contains(info.getX(), info.getY() + 5) || obstacles[obstacle].contains(info.getX() - 10, info.getY())) {
-                System.out.println("colliding");
+                //System.out.println("colliding");
                 while (info.getY() < 100) {
 
-                    if (info.getOrientation() > down && info.getOrientation() < up) {
 
                         return new DivingAction(0.5f, info.getOrientation() + 0.05f);
-                    } else {
 
-                        return new DivingAction(0.5f, info.getOrientation() - 0.05f);
 
-                    }
                 }
             }
         }
@@ -111,7 +108,7 @@ public class Abnidulco extends AI {
 
             if (obstacles[i].contains(info.getX(), info.getY() - 5) || obstacles[i].contains(info.getX() + 10, info.getY())
                     || obstacles[i].contains(info.getX(), info.getY() + 5) || obstacles[i].contains(info.getX() - 10, info.getY())) {
-                System.out.println("colliding differently");
+              //  System.out.println("colliding differently");
                 while (info.getY() < 100) {
                     return new DivingAction(0.5f, info.getOrientation() + 0.05f);
                 }
