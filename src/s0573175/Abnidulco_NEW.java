@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -24,6 +25,7 @@ public class Abnidulco_NEW extends AI {
     private int nextPearl;
     private int previousScore;
     private int[] obstacleList;
+    private int obsI;
 
     //// DIVER CONTOLLER ////
     private float diverSpeed;
@@ -31,6 +33,9 @@ public class Abnidulco_NEW extends AI {
 
     //// STARTING POINT ////
     private Boolean makeInitialization = true;
+    private Boolean goLeft = true;
+    private Boolean saveTime = true;
+    long startTime = 0;
 
     public Abnidulco_NEW(Info info) {
         super(info);
@@ -77,7 +82,7 @@ public class Abnidulco_NEW extends AI {
         System.out.print(Arrays.toString(obstacleList));
 
 
-        diverSpeed = info.getMaxVelocity();
+        diverSpeed = info.getMaxAcceleration();
 
     }
 
@@ -106,33 +111,62 @@ public class Abnidulco_NEW extends AI {
         }
 
 
+        if(saveTime){
+            long time = System.currentTimeMillis() / 1000;
+            startTime = time;
+            saveTime = false;
+        }
+
+        long currentTime = (System.currentTimeMillis() / 1000)  - startTime;
+        //System.out.println(currentTime);
+
+
+
+
         // When obstacles are there:
-        int i=0;
-        for (i = 0; i < obstacles.length; i++) {
 
+        // When no obstacles:
 
-            if (obstacles[i].contains(info.getX(), info.getY() - 5) || obstacles[i].contains(info.getX() + 10, info.getY())
-                    || obstacles[i].contains(info.getX(), info.getY() + 5) || obstacles[i].contains(info.getX() - 10, info.getY())) {
-                //System.out.println("obstacle rest");
-                direction = info.getOrientation() + 0.05f;
+        if(info.getAir() < 500){
+            if(info.getScore() == 9){
+                direction = seekPearl(pearls[0].x, pearls[0].y, info.getX(), info.getY());
+            }else {
+                direction = (float) Math.PI / 2;
+            }
+            }else {
+            if (goLeft) {
+                if (currentTime < 20) {
+                    //System.out.println("go left");
+                    direction = (float) -Math.PI;
+                } else {
+                    goLeft = false;
+                }
+            } else {
 
-            }else if (obstacles[groundObstacle].contains(info.getX(), info.getY() - 5) || obstacles[groundObstacle].contains(info.getX() + 10, info.getY())
+                direction = seekPearl(pearls[0].x, pearls[0].y, info.getX(), info.getY());
+            }
+        }
+
+        for (obsI = 0; obsI < obstacles.length; obsI++) {
+
+            if (obsI == groundObstacle){
+                continue;
+            }
+
+            if (obstacles[obsI].contains(info.getX(), info.getY() - 5) || obstacles[obsI].contains(info.getX() + 10, info.getY())
+                    || obstacles[obsI].contains(info.getX(), info.getY() + 5) || obstacles[obsI].contains(info.getX() - 10, info.getY())) {
+                System.out.println("obstacle rest");
+                direction = info.getOrientation() - 0.05f;
+
+            }else if(obstacles[groundObstacle].contains(info.getX(), info.getY() - 5) || obstacles[groundObstacle].contains(info.getX() + 10, info.getY())
                         || obstacles[groundObstacle].contains(info.getX(), info.getY() + 5) || obstacles[groundObstacle].contains(info.getX() - 10, info.getY())) {
-                  //  System.out.println("big boi");
-                    direction = info.getOrientation() +0.05f;
+                    System.out.println("big boi");
+                    direction = info.getOrientation() + 0.05f;
 
-            }else{
-                // When no obstacles:
-                if(pearls[0].x < info.getX()){
-                        System.out.println("go left");
-                        direction = (float) -Math.PI;
-                    }
-                else {
-                    direction = seekPearl(pearls[0].x, pearls[0].y, info.getX(), info.getY());
                 }
 
             }
-        }
+
 
         nextPearl++;
         //System.out.println(direction);
@@ -170,12 +204,6 @@ public class Abnidulco_NEW extends AI {
         }
 
         return remainingPearls;
-    }
-
-    public float goLeftRoutine(){
-
-
-        return direction;
     }
 
 
